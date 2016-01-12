@@ -365,6 +365,7 @@ class FormulaConstant(Formula):
         name = symbols(name)
         super(FormulaConstant, self).__init__(name, [], [name])
         self.param_values[str(name)] = value
+        self._value = value
 
     def set_param_values(self, **kwargs):
         """
@@ -377,6 +378,13 @@ class FormulaConstant(Formula):
         Set all of the parameter values to None.
         """
         raise RuntimeError("Can't change the value of a constant!")
+
+    @property
+    def value(self):
+        return self._value
+
+    def __call__(self):
+        return self._value
 
 def variable(x):
     x = symbols(x)

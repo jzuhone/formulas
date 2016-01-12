@@ -5,14 +5,14 @@ try:
 except ImportError:
     yt_pc = None
 try:
-    import astropy.constants as ap_pc
+    import astropy.constants as astropy_pc
 except ImportError:
-    ap_pc = None
+    astropy_pc = None
 
 pi = Pi()
 
 yt_map = {"m_e":"me","m_p":"mp","m_h":"mh","k_B":"kboltz"}
-ap_map = {}
+astropy_map = {}
 
 class PhysicalConstants(object):
     def __init__(self, constants, map):
@@ -25,5 +25,5 @@ class PhysicalConstants(object):
 
 if yt_pc is not None:
     yt_constants = PhysicalConstants(yt_pc, yt_map)
-if ap_pc is not None:
-    ap_constants = PhysicalConstants(ap_pc, ap_map)
+if astropy_pc is not None:
+    astropy_constants = PhysicalConstants(astropy_pc, astropy_map)
