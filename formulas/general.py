@@ -1,6 +1,5 @@
-from sympy import symbols, exp, sqrt, Rational
+from sympy import symbols, exp, sqrt, Rational, pi
 from formulas.base import Formula1D
-from formulas.constants import pi
 
 def linear(x="x", a="a", b="b"):
     x, a, b = symbols((x, a, b))

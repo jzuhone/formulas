@@ -1,6 +1,5 @@
 from formulas.base import Formula1D
-from formulas.constants import pi
-from sympy import symbols, exp
+from sympy import symbols, exp, pi
 from sympy.mpmath import quad
 import numpy as np
 

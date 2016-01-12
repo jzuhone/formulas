@@ -8,4 +8,4 @@ def maxwellian_velocity(v="v", A="A", sigma="sigma"):
 def maxwellian_speed(v="v", A="A", sigma="sigma"):
     f = maxwellian_velocity(v=v, A=A, sigma=sigma)
     v_var = variable(v)
-    return 4*(pi*v_var**2*f)
+    return 4*pi*v_var**2*f

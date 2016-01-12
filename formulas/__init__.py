@@ -1,5 +1,4 @@
-from formulas.base import Formula, Formula1D, Formula2D, variable, \
-    FormulaConstant
+from formulas.base import Formula, Formula1D, Formula2D, variable
 from formulas.general import linear, power_law, exponential, gaussian
 from formulas.radial_profiles import \
     beta_model_profile, \
@@ -14,4 +13,5 @@ from formulas.radial_profiles import \
     rescale_profile_by_mass
 from formulas.constants import \
     yt_constants, \
-    astropy_constants
+    astropy_constants, \
+    pi

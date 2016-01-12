@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import \
     FigureCanvasAgg
 
-from six import PY3, PY2, string_types
+from six import PY2, string_types
 
 import base64
 from io import BytesIO
@@ -372,29 +372,6 @@ class Formula2D(Formula):
         ret = r'<img style="max-width:100%%;max-height:100%%;" ' \
               r'src="data:image/png;base64,{0}"><br>'.format(img)
         display(HTML(ret))
-
-class FormulaConstant(Formula):
-    def __init__(self, name, value):
-        name = symbols(name)
-        super(FormulaConstant, self).__init__(name, [], [name])
-        self.param_values[str(name)] = value
-        self._value = value
-
-    def set_param_values(self, **kwargs):
-        """
-        Set the values of one or more parameters.
-        """
-        raise RuntimeError("Can't change the value of a constant!")
-
-    def clear_param_values(self):
-        """
-        Set all of the parameter values to None.
-        """
-        raise RuntimeError("Can't change the value of a constant!")
-
-    @property
-    def value(self):
-        return self._value
 
 def variable(x):
     x = symbols(x)
