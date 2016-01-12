@@ -4,7 +4,7 @@ from setuptools import setup
 setup(name='formulas',
       packages=['formulas'],
       version='0.1.0',
-      description='Python tools for ACIS Ops',
+      description='Unitful physical formulae',
       author='John ZuHone',
       author_email='jzuhone@gmail.com',
       url='http://github.com/jzuhone/formulas',
