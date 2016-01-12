@@ -1,5 +1,6 @@
-from sympy import symbols, exp
+from sympy import symbols, exp, sqrt, Rational
 from formulas.base import Formula1D
+from formulas.constants import pi
 
 def linear(x="x", a="a", b="b"):
     x, a, b = symbols((x, a, b))
@@ -31,6 +32,10 @@ def exponential(x="x", A="A", x_0="x_0", x_s="x_s"):
     return Formula1D(formula, x, [A, x_0, x_s])
 
 def gaussian(x="x", A="A", mu="mu", sigma="sigma"):
-    x, A, mu, sigma = symbols((x, A, mu, sigma))
-    formula = A*exp(-0.5*((x-mu)/sigma)**2)
-    return Formula1D(formula, x, [A, mu, sigma])
+    x, A, sigma = symbols((x, A, sigma))
+    params = [A, sigma]
+    if mu != 0:
+        mu = symbols(mu)
+        params.append(mu)
+    formula = A*exp(-Rational(1,2)*((x-mu)/sigma)**2)/(sigma*sqrt(2*pi))
+    return Formula1D(formula, x, params)
