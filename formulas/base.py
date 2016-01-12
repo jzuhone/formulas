@@ -3,14 +3,16 @@ from __future__ import print_function
 import numpy as np
 
 from sympy.utilities.lambdify import lambdify
-from sympy import symbols, latex, Float, diff, sympify, Mul, Add
+from sympy import symbols, latex, Float, diff, \
+    sympify, Mul, Add, Rational, Integer
+from sympy.core.numbers import Pi
 
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import \
     FigureCanvasAgg
 
-from six import PY3, string_types
+from six import PY3, PY2, string_types
 
 import base64
 from io import BytesIO
@@ -22,11 +24,12 @@ from formulas.utils import \
     get_units, \
     check_type
 
-if PY3:
-    NumberTypes = (int, float, Float)
-else:
-    NumberTypes = (int, long, float, Float)
+NumberTypes = [int, float, Float, Rational, Integer, Pi]
+if PY2:
+    NumberTypes.append(long)
+NumberTypes = tuple(NumberTypes)
 SymPyTypes = (Mul, Add)
+ExpTypes = (Rational, Float, Integer)
 
 class Formula(object):
     def __init__(self, formula, vars, params):
@@ -168,11 +171,21 @@ class Formula(object):
     def __mul__(self, other):
         return self._formula_op(self.formula.__mul__, other)
 
+    def __rmul__(self, other):
+        return self._formula_op(self.formula.__rmul__, other)
+
     def __truediv__(self, other):
         return self._formula_op(self.formula.__truediv__, other)
 
     def __pow__(self, other):
-        return self._formula_op(self.formula.__pow__, Float(other))
+        if not isinstance(other, ExpTypes):
+            if isinstance(other, int):
+                a = Integer(other)
+            else:
+                a = Float(other)
+        else:
+            a = other
+        return self._formula_op(self.formula.__pow__, a)
 
     __div__ = __truediv__
 
@@ -381,9 +394,6 @@ class FormulaConstant(Formula):
 
     @property
     def value(self):
-        return self._value
-
-    def __call__(self):
         return self._value
 
 def variable(x):
