@@ -1,10 +1,5 @@
 language: python
 
-python:
-    - 2.7
-    - 3.4
-    - 3.5
-    # This is just for "egg_info".  All other builds are explicitly given in the matrix
 env:
     global:
         # Set defaults to avoid repeating in most cases
