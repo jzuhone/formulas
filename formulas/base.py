@@ -263,6 +263,7 @@ class Formula1D(Formula):
         ax.set_ylabel(r"$\mathrm{%s(%s)}$ (" % (function_name, self.x) + y_units + ")")
         ax.set_xscale(x_scale)
         ax.set_yscale(y_scale)
+        fig.tight_layout()
         if filename is not None:
             fig.savefig(filename)
         canvas = FigureCanvasAgg(fig)
@@ -360,6 +361,7 @@ class Formula2D(Formula):
         cbar = fig.colorbar(im, cax=cax)
         cbar.set_label(r"$\mathrm{%s(%s,%s)}$ (" % (function_name, self.x, self.y) + z_units + ")")
         cbar.ax.set_yscale(z_scale)
+        fig.tight_layout()
         if filename is not None:
             fig.savefig(filename)
         canvas = FigureCanvasAgg(fig)
