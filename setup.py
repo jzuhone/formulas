@@ -1,5 +1,21 @@
 #!/usr/bin/env python
 from setuptools import setup
+import sys
+import os
+
+if sys.argv[-1] == 'test':
+    test_requirements = [
+        'pytest',
+        'coverage'
+    ]
+    try:
+        modules = map(__import__, test_requirements)
+    except ImportError as e:
+        err_msg = e.message.replace("No module named ", "")
+        msg = "%s is not installed. Install your test requirments." % err_msg
+        raise ImportError(msg)
+    os.system('py.test')
+    sys.exit()
 
 setup(name='formulas',
       packages=['formulas'],
