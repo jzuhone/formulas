@@ -8,7 +8,6 @@ from sympy import symbols, latex, Float, diff, \
 from sympy.core.numbers import Pi
 
 import matplotlib
-import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import \
     FigureCanvasAgg
 
@@ -138,6 +137,15 @@ class Formula(object):
             formula = op(other)
         else:
             raise RuntimeError("Undefined operation between Formula and %s." % type(other))
+        # The next couple of loops check for variables and parameters that have
+        # been canceled out by division or differentiation
+        for var in vars.copy():
+            if var not in formula.free_symbols:
+                vars.remove(var)
+        for p in params.copy():
+            if p not in formula.free_symbols:
+                params.remove(p)
+                param_values.pop(str(p))
         ndim = len(vars)
         if ndim == 1:
             p = Formula1D(formula, vars[0], params)
