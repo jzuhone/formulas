@@ -11,11 +11,11 @@ matrix:
 
         # Try all python versions with the latest numpy
         - python: 2.7
-          env: SETUP_CMD='test --coverage'
+          env: SETUP_CMD='test'
         - python: 3.4
-          env: SETUP_CMD='test --coverage'
+          env: SETUP_CMD='test'
         - python: 3.5
-          env: SETUP_CMD='test --coverage'
+          env: SETUP_CMD='test'
 
 before_install:
 
@@ -41,7 +41,7 @@ install:
     - conda install --yes numpy=$NUMPY_VERSION pytest pip yt astropy
 
     # COVERAGE DEPENDENCIES
-    - if [[ $SETUP_CMD == 'test --coverage' ]]; then pip install coverage coveralls; fi
+    - pip install coverage coveralls
 
 script:
     - $MAIN_CMD $SETUP_CMD
