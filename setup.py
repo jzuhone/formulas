@@ -9,7 +9,7 @@ setup(name='formulas',
       author_email='jzuhone@gmail.com',
       url='http://github.com/jzuhone/formulas',
       download_url='https://github.com/jzuhone/formulas/tarball/0.1.0',
-      install_requires=["six","numpy","astropy","yt"],
+      install_requires=["six","numpy","astropy","yt","matplotlib"],
       classifiers=[
           'Intended Audience :: Science/Research',
           'Operating System :: OS Independent',

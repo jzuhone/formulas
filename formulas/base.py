@@ -248,9 +248,8 @@ class Formula1D(Formula):
         >>> density_profile.quick_plot(r_min, r_max, x_scale="log")
         """
         from IPython.display import HTML, display
-        plt.ioff()
         matplotlib.rc("font", size=16, family="serif")
-        fig = plt.figure(figsize=(8,8))
+        fig = matplotlib.figure.Figure(figsize=(8,8))
         ax = fig.add_subplot(111)
         arr = check_type(x_min)
         x = arr(np.linspace(x_min.value, x_max.value, num=res), get_units(x_min))
@@ -334,9 +333,8 @@ class Formula2D(Formula):
         """
         from IPython.display import display, HTML
         from mpl_toolkits.axes_grid1 import make_axes_locatable
-        plt.ioff()
         matplotlib.rc("font", size=16, family="serif")
-        fig = plt.figure(figsize=(8,8))
+        fig = matplotlib.figure.Figure(figsize=(8,8))
         ax = fig.add_subplot(111)
         arr = check_type(x_min)
         x = np.linspace(x_min.value, x_max.value, num=res_x)
