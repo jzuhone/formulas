@@ -5,9 +5,15 @@ import yt.units as u
 f_x = Formula1D("a*x**2+b","x",["a","b"])
 g_x = Formula1D("p*cos(c*x)","x",["c","p"])
 h_y = Formula1D("k*exp(d*y)","y",["k","d"])
-f_x.set_param_values(a=50.*u.km/u.s**2, b=30.*u.km)
-g_x.set_param_values(p=20.*u.km, c=10.*u.s**-1)
-h_y.set_param_values(k=10.*u.km, d=5.*u.s**-1)
+a = 50.*u.km/u.s**2
+b = 30.*u.km
+c = 10.*u.s**-1
+d = 5.*u.s**-1
+k = 10.*u.km
+p = 20.*u.km
+f_x.set_param_values(a=a, b=b)
+g_x.set_param_values(p=p, c=c)
+h_y.set_param_values(k=k, d=d)
 x = 60.*u.s
 y = 15.*u.s
 
@@ -65,3 +71,11 @@ def test_pow():
     assert isinstance(n_x, Formula1D)
     assert_allclose(n_x(x).v, (f_x(x)**3).v)
     assert str(n_x(x).units) == "km**3"
+
+def test_diff():
+    n_x = f_x.diff("x")
+    assert n_x.ndim == 1
+    assert isinstance(n_x, Formula1D)
+    assert_allclose(n_x(x).v, (2.*a*x).v)
+    assert str(n_x(x).units) == "km/s"
+
