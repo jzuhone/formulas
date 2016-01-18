@@ -40,6 +40,10 @@ def test_subtract():
     assert isinstance(m_xy, Formula2D)
     assert_allclose(m_xy(x=x,y=y).v, (n_x(x)-h_y(y)).v)
     assert str(m_xy(x=x,y=y).units) == "km"
+    l_x = f_x-f_x
+    assert len(l_x.params.values()) == 0
+    assert len(l_x.param_values.values()) == 0
+    assert len(l_x.var_symbols) == 0
 
 def test_multiply():
     n_x = f_x*g_x
@@ -64,6 +68,10 @@ def test_divide():
     assert isinstance(m_xy, Formula2D)
     assert_allclose(m_xy(x=x,y=y).v, (n_x(x)/h_y(y)).v)
     assert str(m_xy(x=x,y=y).units) == "1/km"
+    l_x = f_x/f_x
+    assert len(l_x.params.values()) == 0
+    assert len(l_x.param_values.values()) == 0
+    assert len(l_x.var_symbols) == 0
 
 def test_pow():
     n_x = f_x**3
@@ -78,4 +86,8 @@ def test_diff():
     assert isinstance(n_x, Formula1D)
     assert_allclose(n_x(x).v, (2.*a*x).v)
     assert str(n_x(x).units) == "km/s"
+    m_x = n_x.diff("x")
+    assert m_x.ndim == 0
+    assert_allclose(m_x().v, (2.*a).v)
+    assert str(m_x().units) == "km/s**2"
 
