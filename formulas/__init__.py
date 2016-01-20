@@ -7,8 +7,10 @@ from formulas.radial_profiles import \
     baseline_entropy_profile, \
     AM06_density_profile, \
     AM06_temperature_profile, \
-    NFW_profile, \
-    hernquist_profile, \
+    NFW_density_profile, \
+    NFW_mass_profile, \
+    hernquist_density_profile, \
+    hernquist_mass_profile, \
     exponential_taper_profile, \
     rescale_profile_by_mass
 from formulas.constants import \

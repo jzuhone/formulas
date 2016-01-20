@@ -1,5 +1,5 @@
 from formulas.base import Formula1D
-from sympy import symbols, exp, pi
+from sympy import symbols, exp, pi, log
 from sympy.mpmath import quad
 import numpy as np
 
@@ -59,11 +59,10 @@ def vikhlinin_density_profile(r="r", rho_0="rho_0", r_c="r_c", r_s="r_s", alpha=
         (1+(r/r_s)**gamma)**(-epsilon/gamma/2)
     return Formula1D(profile, r, params)
 
-def hernquist_profile(r="r", M_0="M_0", a="a", r_c=None):
+def hernquist_density_profile(r="r", M_0="M_0", a="a"):
     """
     A Hernquist density profile (Hernquist, L. 1990,
-    ApJ, 356, 359). May be optionally be modified by
-    a core radius.
+    ApJ, 356, 359).
 
     Parameters
     ----------
@@ -71,27 +70,31 @@ def hernquist_profile(r="r", M_0="M_0", a="a", r_c=None):
         The symbol for the total mass of the profile.
     a : string
         The symbol for the scale radius.
-    r_c : string
-        The symbol for the core radius. If not specified,
-        the profile will not have a core.
     """
     r, M_0, a = symbols((r, M_0, a))
-    params = [M_0, a]
-    if r_c is None:
-        profile = r/a
-    else:
-        r_c = symbols(r_c)
-        params += [r_c]
-        profile = (r+r_c)/a
-    profile *= (1+r/a)**3
-    profile = M_0/(2*pi*a**3)/profile
-    return Formula1D(profile, r, params)
+    profile = M_0/(2*pi*a**3)/((r/a)*(1+r/a)**3)
+    return Formula1D(profile, r, [M_0, a])
 
-def NFW_profile(r="r", rho_s="rho_s", r_s="r_s", r_c=None):
+def hernquist_mass_profile(r="r", M_0="M_0", a="a"):
+    """
+    A Hernquist mass profile (Hernquist, L. 1990,
+    ApJ, 356, 359).
+
+    Parameters
+    ----------
+    M_0 : string
+        The symbol for the total mass of the profile.
+    a : string
+        The symbol for the scale radius.
+    """
+    r, M_0, a = symbols((r, M_0, a))
+    profile = M_0*r**2/(r+a)**2
+    return Formula1D(profile, r, [M_0, a])
+    
+def NFW_density_profile(r="r", rho_s="rho_s", r_s="r_s"):
     """
     An NFW density profile (Navarro, J.F., Frenk, C.S.,
-    & White, S.D.M. 1996, ApJ, 462, 563). May be optionally
-    modified by a core radius.
+    & White, S.D.M. 1996, ApJ, 462, 563).
 
     Parameters
     ----------
@@ -99,21 +102,27 @@ def NFW_profile(r="r", rho_s="rho_s", r_s="r_s", r_c=None):
         The symbol for the scale density of the profile.
     r_s : string
         The symbol for the scale radius.
-    r_c : string
-        The symbol for the core radius. If not specified,
-        the profile will not have a core.
     """
     r, rho_s, r_s = symbols((r, rho_s, r_s))
-    params = [rho_s, r_s]
-    if r_c is None:
-        profile = r/r_s
-    else:
-        r_c = symbols(r_c)
-        params += [r_c]
-        profile = (r+r_c)/r_s
-    profile *= (1+r/r_s)**2
-    profile = rho_s/profile
-    return Formula1D(profile, r, params)
+    profile = rho_s/((r/r_s)*(1+r/r_s)**2)
+    return Formula1D(profile, r, [rho_s, r_s])
+
+def NFW_mass_profile(r="r", rho_s="rho_s", r_s="r_s"):
+    """
+    An NFW mass profile (Navarro, J.F., Frenk, C.S.,
+    & White, S.D.M. 1996, ApJ, 462, 563).
+
+    Parameters
+    ----------
+    rho_s : string
+        The symbol for the scale density of the profile.
+    r_s : string
+        The symbol for the scale radius.
+    """
+    r, rho_s, r_s = symbols((r, rho_s, r_s))
+    x = r/r_s
+    profile = 4*pi*rho_s*r_s**3*(log(1+x)-x/(1+x))
+    return Formula1D(profile, r, [rho_s, r_s])
 
 def exponential_taper_profile(r="r", K="K", r_begin="r_begin", r_decay="r_decay", kappa="kappa"):
     r, r_begin, kappa, r_decay = symbols((r, K, r_begin, kappa, r_decay))
