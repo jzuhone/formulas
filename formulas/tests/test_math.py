@@ -1,4 +1,5 @@
 from formulas.base import Formula1D, Formula2D
+from formulas.constants import FormulaConstant
 from numpy.testing import assert_allclose
 import yt.units as u
 
@@ -16,6 +17,7 @@ g_x.set_param_values(p=p, c=c)
 h_y.set_param_values(k=k, d=d)
 x = 60.*u.s
 y = 15.*u.s
+w = FormulaConstant("w", 2*u.km)
 
 def test_add():
     n_x = f_x+g_x
@@ -28,6 +30,7 @@ def test_add():
     assert isinstance(m_xy, Formula2D)
     assert_allclose(m_xy(x=x,y=y).v, (n_x(x)+h_y(y)).v)
     assert str(m_xy(x=x,y=y).units) == "km"
+    assert (f_x + w)(x) == (w + f_x)(x)
 
 def test_subtract():
     n_x = f_x-g_x
@@ -56,6 +59,7 @@ def test_multiply():
     assert isinstance(m_xy, Formula2D)
     assert_allclose(m_xy(x=x,y=y).v, (n_x(x)*h_y(y)).v)
     assert str(m_xy(x=x,y=y).units) == "km**3"
+    assert (f_x * 2)(x) == (2 * f_x)(x)
 
 def test_divide():
     n_x = f_x/g_x

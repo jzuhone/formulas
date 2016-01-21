@@ -70,7 +70,7 @@ class Formula(object):
         """
         return latex(self.formula, **kwargs)
 
-    def show_params(self):
+    def show_params(self): # pragma: no cover
         """
         Print out the parameters and their current values.
         """
