@@ -1,4 +1,4 @@
-from formulas.base import Formula1D
+from formulas.base import Formula1D, variable, Formula2D
 import yt.units as u
 from numpy.testing import assert_allclose
 
@@ -16,3 +16,10 @@ def test_clear():
     for pv in f_x.param_values.values():
         assert pv is None
     f_x.set_param_values(a=a, b=b)
+
+def test_variable():
+    x = variable("x")
+    y = variable("y")
+    z1 = x*y
+    z2 = Formula2D("x*y", "x", "y", [])
+    assert z1.formula == z2.formula
