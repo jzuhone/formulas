@@ -230,7 +230,7 @@ class Formula1D(Formula):
         self.x = list(self.var_symbols.values())[0]
 
     def quick_plot(self, x_min, x_max, x_scale="linear", y_scale="linear",
-                   res=200, filename=None, function_name="f", units=None):
+                   res=200, filename=None, function_name="f", units=None): # pragma: no cover
         """
         Plot the formula.
 
@@ -300,7 +300,7 @@ class Formula2D(Formula):
     def quick_plot(self, x_min, x_max, y_min, y_max, x_scale="linear",
                    y_scale="linear", z_scale="linear", res_x=200,
                    res_y=200, filename=None, cmap=None, function_name="f",
-                   units=None):
+                   units=None): # pragma: no cover
         """
         Plot the formula.
 
