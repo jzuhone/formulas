@@ -214,12 +214,11 @@ class Formula(object):
         vars = list(self.var_symbols.values())
         params = list(self.params.values())
         if self.ndim == 1:
-            ftype = Formula1D
+            uf = Formula1D(self.formula, vars[0], params)
         elif self.ndim == 2:
-            ftype = Formula2D
+            uf = Formula2D(self.formula, vars[0], vars[1], params)
         else:
-            ftype = Formula
-        uf = ftype(self.formula, vars, params)
+            uf = Formula(self.formula, vars, params)
         pvalues = dict((k,float(v)) for k,v in self.param_values.items())
         uf.set_param_values(**pvalues)
         return uf

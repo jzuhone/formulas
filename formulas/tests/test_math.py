@@ -56,6 +56,7 @@ def test_subtract():
     assert len(l_x.param_values.values()) == 0
     assert len(l_x.var_symbols) == 0
     assert (-f_x)(x) == -(f_x(x))
+    assert (j_o - 4)(o) == -(4 - j_o)(o)
 
 def test_multiply():
     n_x = f_x*g_x
