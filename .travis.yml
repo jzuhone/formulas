@@ -47,4 +47,4 @@ script:
     - $MAIN_CMD $SETUP_CMD
 
 after_success:
-    - if [[ $SETUP_CMD == 'test --coverage' ]]; then coveralls --rcfile='astropy/tests/coveragerc'; fi
+    - coveralls --rcfile='formulas/tests/coveragerc'

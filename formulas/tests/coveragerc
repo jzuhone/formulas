@@ -1,0 +1,7 @@
+[run]
+source = formulas
+omit =
+   formulas/__init__*
+   formulas/*setup*
+   formulas/*tests/*
+
