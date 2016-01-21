@@ -147,7 +147,7 @@ class Formula(object):
         for var in list(vars):
             if var not in formula.free_symbols:
                 vars.remove(var)
-        for p in params.copy():
+        for p in list(params):
             if p not in formula.free_symbols:
                 params.remove(p)
                 param_values.pop(str(p))
