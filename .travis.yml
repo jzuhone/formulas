@@ -4,14 +4,14 @@ env:
     global:
         # Set defaults to avoid repeating in most cases
         - NUMPY_VERSION=1.10
-        - MAIN_CMD='coverage run setup.py'
+        - MAIN_CMD='python setup.py'
 
 matrix:
     include:
 
         # Try all python versions with the latest numpy
         - python: 2.7
-          env: SETUP_CMD='test'
+          env: SETUP_CMD='test --coverage'
         - python: 3.4
           env: SETUP_CMD='test'
         - python: 3.5
