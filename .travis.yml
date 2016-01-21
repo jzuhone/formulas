@@ -11,11 +11,13 @@ matrix:
 
         # Try all python versions with the latest numpy
         - python: 2.7
-          env: SETUP_CMD='test --coverage'
+          env: SETUP_CMD='test'
         - python: 3.4
           env: SETUP_CMD='test'
         - python: 3.5
           env: SETUP_CMD='test'
+        - python: 2.7
+          env: SETUP_CMD='coverage run --source formulas -m py.test'
 
 before_install:
 
@@ -47,4 +49,6 @@ script:
     - $MAIN_CMD $SETUP_CMD
 
 after_success:
-    - coveralls --rcfile='formulas/tests/coveragerc'
+    - if [[ $SETUP_CMD == 'coverage run --source formulas -m py.test' ]]; then
+          coveralls --rcfile='formulas/tests/coveragerc';
+      fi
