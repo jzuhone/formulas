@@ -266,14 +266,14 @@ def rescale_profile_by_mass(profile, params, mass, radius):
     ...                              c=c, alpha=alpha, beta=beta)
     >>> rescale_profile_by_mass(gas_density, ["rho_0"], M0, np.inf*u.kpc)
     """
-    R = float(in_cgs(radius))
-    M = float(in_cgs(mass))
+    R = float(in_cgs(radius).value)
+    M = float(in_cgs(mass).value)
     pc = profile.copy()
     for n, p in pc.param_values.items():
         pc.param_values[n] = in_cgs(p)
     rho = pc.unitless()
     mass_int = lambda r: rho(r)*r*r
-    scale = M/(4.*np.pi*quad(mass_int, [0, R]))
+    scale = float(M/(4.*np.pi*quad(mass_int, [0, R])))
     for p in params:
         u = get_units(profile.param_values[p])
-        profile.param_values[p] = in_units(pc.param_values[p]*scale, u)
+        profile.param_values[p] = in_units(pc.param_values[p]*scale, str(u))

@@ -219,7 +219,12 @@ class Formula(object):
             uf = Formula2D(self.formula, vars[0], vars[1], params)
         else:
             uf = Formula(self.formula, vars, params)
-        pvalues = dict((k,float(v)) for k,v in self.param_values.items())
+        pvalues = {}
+        for k,v in self.param_values.items():
+            if hasattr(v,"units") or hasattr(v,"unit"):
+                pvalues[k] = float(v.value)
+            else:
+                pvalues[k] = v
         uf.set_param_values(**pvalues)
         return uf
 

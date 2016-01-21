@@ -46,7 +46,7 @@ def test_hernquist_mass():
     p.set_param_values(a=a, M_0=M_0)
     assert_allclose(p(r_ap).to("solMass").value, (M_0*r_ap**2/(r_ap+a)**2).value)
 
-def test_mass_rescaling():
+def test_mass_rescaling_yt():
     M = 6.0e14*ytu.Msun
     R = 1500.0*ytu.kpc
     pm = NFW_mass_profile()
@@ -55,3 +55,13 @@ def test_mass_rescaling():
     rescale_profile_by_mass(pd, ["rho_s"], M, R)
     pm.set_param_values(**pd.param_values)
     assert_allclose(pm(R).in_units("Msun").v, M.v)
+
+def test_mass_rescaling_astropy():
+    M = 6.0e14*apu.Msun
+    R = 1500.0*apu.kpc
+    pm = NFW_mass_profile()
+    pd = NFW_density_profile()
+    pd.set_param_values(r_s=350*apu.kpc, rho_s=1.0*apu.Msun/apu.kpc**3)
+    rescale_profile_by_mass(pd, ["rho_s"], M, R)
+    pm.set_param_values(**pd.param_values)
+    assert_allclose(pm(R).to("Msun").value, M.value)
