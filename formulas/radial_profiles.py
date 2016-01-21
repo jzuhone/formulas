@@ -1,6 +1,7 @@
 from formulas.base import Formula1D
 from sympy import symbols, exp, pi, log
 from sympy.mpmath import quad
+from formulas.utils import in_cgs, get_units, in_units
 import numpy as np
 
 def beta_model_profile(r="r", rho_c="rho_c", r_c="r_c", beta="beta"):
@@ -265,10 +266,14 @@ def rescale_profile_by_mass(profile, params, mass, radius):
     ...                              c=c, alpha=alpha, beta=beta)
     >>> rescale_profile_by_mass(gas_density, ["rho_0"], M0, np.inf*u.kpc)
     """
-    density_units = (mass/radius**3).units
-    lunit = radius.unit_quantity
-    mass_int = lambda r: float(profile(float(r)*lunit).in_units(density_units).v)*r*r
-    scale = float(mass)/(4.*np.pi*quad(mass_int, [0, float(radius)]))
+    R = float(in_cgs(radius))
+    M = float(in_cgs(mass))
+    pc = profile.copy()
+    for n, p in pc.param_values.items():
+        pc.param_values[n] = in_cgs(p)
+    rho = pc.unitless()
+    mass_int = lambda r: rho(r)*r*r
+    scale = M/(4.*np.pi*quad(mass_int, [0, R]))
     for p in params:
-        v = profile.param_values[p]
-        profile.param_values[p] = v*scale
+        u = get_units(profile.param_values[p])
+        profile.param_values[p] = in_units(pc.param_values[p]*scale, u)
