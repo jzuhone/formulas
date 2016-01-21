@@ -6,6 +6,7 @@ from formulas.radial_profiles import \
     AM06_density_profile, \
     AM06_temperature_profile, \
     NFW_density_profile, \
+    NFW_mass_profile, \
     hernquist_density_profile, \
     exponential_taper_profile, \
     rescale_profile_by_mass
@@ -24,3 +25,13 @@ def test_nfw():
     x = r/r_s
     assert_allclose(p(r).v, (rho_s/(x*(1.+x)**2)).v)
     assert str(p(r).units) == str(rho_s.units)
+
+def test_mass_rescaling():
+    M = 6.0e14*u.Msun
+    R = 1500.0*u.kpc
+    pm = NFW_mass_profile()
+    pd = NFW_density_profile()
+    pd.set_param_values(r_s=350*u.kpc, rho_s=1.0*u.Msun/u.kpc**3)
+    rescale_profile_by_mass(pd, ["rho_s"], M, R)
+    pm.set_param_values(**pd.param_values)
+    assert_allclose(pm(R).in_units("Msun").v, M.v)
