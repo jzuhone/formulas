@@ -4,20 +4,19 @@ env:
     global:
         # Set defaults to avoid repeating in most cases
         - NUMPY_VERSION=1.10
-        - MAIN_CMD='python setup.py'
 
 matrix:
     include:
 
         # Try all python versions with the latest numpy
         - python: 2.7
-          env: SETUP_CMD='test'
+          env: CMD='python setup.py test'
         - python: 3.4
-          env: SETUP_CMD='test'
+          env: CMD='python setup.py test'
         - python: 3.5
-          env: SETUP_CMD='test'
+          env: CMD='python setup.py test'
         - python: 2.7
-          env: SETUP_CMD='coverage run --source formulas -m py.test'
+          env: CMD='coverage run --source formulas -m py.test'
 
 before_install:
 
@@ -46,9 +45,9 @@ install:
     - pip install coverage coveralls
 
 script:
-    - $MAIN_CMD $SETUP_CMD
+    - $CMD
 
 after_success:
-    - if [[ $SETUP_CMD == 'coverage run --source formulas -m py.test' ]]; then
+    - if [[ $CMD == 'coverage run --source formulas -m py.test' ]]; then
           coveralls --rcfile='formulas/tests/coveragerc';
       fi
