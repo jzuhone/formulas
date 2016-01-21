@@ -144,7 +144,7 @@ class Formula(object):
             raise RuntimeError("Undefined operation between Formula and %s." % type(other))
         # The next couple of loops check for variables and parameters that have
         # been canceled out by subtract, division, or differentiation
-        for var in vars.copy():
+        for var in list(vars):
             if var not in formula.free_symbols:
                 vars.remove(var)
         for p in params.copy():
