@@ -1,6 +1,7 @@
 from formulas.base import Formula1D, Formula2D
 from formulas.constants import FormulaConstant
 from numpy.testing import assert_allclose
+from sympy import Float
 import yt.units as u
 
 f_x = Formula1D("a*x**2+b","x",["a","b"])
@@ -91,6 +92,16 @@ def test_pow():
     assert isinstance(n_x, Formula1D)
     assert_allclose(n_x(x).v, (f_x(x)**3).v)
     assert str(n_x(x).units) == "km**3"
+    m_x = f_x**0.5
+    assert n_x.ndim == 1
+    assert isinstance(m_x, Formula1D)
+    assert_allclose(m_x(x).v, (f_x(x)**0.5).v)
+    assert str(m_x(x).units) == "sqrt(km)"
+    l_x = f_x**Float(0.3)
+    assert l_x.ndim == 1
+    assert isinstance(l_x, Formula1D)
+    assert_allclose(l_x(x).v, (f_x(x)**0.3).v)
+    assert str(l_x(x).units) == "km**(3/10)"
 
 def test_diff():
     n_x = f_x.diff("x")
