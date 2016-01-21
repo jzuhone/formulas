@@ -46,6 +46,34 @@ def test_hernquist_mass():
     p.set_param_values(a=a, M_0=M_0)
     assert_allclose(p(r_ap).to("solMass").value, (M_0*r_ap**2/(r_ap+a)**2).value)
 
+def test_beta_model():
+    p = beta_model_profile()
+    r_c = 100.*apu.kpc
+    rho_c = 1.0e-25*apu.g/apu.cm**3
+    beta = 1.0
+    p.set_param_values(r_c=r_c, rho_c=rho_c, beta=beta)
+    assert_allclose(p(r_ap).value, (rho_c*(1.+(r_ap/r_c)**2)**(-1.5*beta)).value)
+
+def test_baseline_entropy():
+    p = baseline_entropy_profile()
+    K_0 = 10.*ytu.keV*ytu.cm**2
+    K_200 = 10000.*ytu.keV*ytu.cm**2
+    r_200 = 1.0*ytu.Mpc
+    alpha = 1.1
+    p.set_param_values(K_0=K_0, K_200=K_200, r_200=r_200, alpha=alpha)
+    assert_allclose(p(r_yt).value, (K_0+K_200*(r_yt/r_200)**alpha).value)
+    assert str(p(r_yt).units) == str(K_0.units)
+
+def test_AM06_temperature():
+    p = AM06_temperature_profile()
+    a_c = 60*ytu.kpc
+    a = 600.*ytu.kpc
+    c = 0.17
+    T_0 = 10.*ytu.keV
+    p.set_param_values(T_0=T_0, a_c=a_c, c=c, a=a)
+    assert_allclose(p(r_yt).value, (T_0/(1.+r_yt/a)*(c+r_yt/a_c)/(1.+r_yt/a_c)).value)
+    assert str(p(r_yt).units) == str(T_0.units)
+
 def test_mass_rescaling_yt():
     M = 6.0e14*ytu.Msun
     R = 1500.0*ytu.kpc
