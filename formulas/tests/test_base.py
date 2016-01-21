@@ -1,4 +1,5 @@
 from formulas.base import Formula1D, variable, Formula2D
+from formulas.radial_profiles import NFW_density_profile
 import yt.units as u
 from numpy.testing import assert_allclose
 
@@ -23,3 +24,8 @@ def test_variable():
     z1 = x*y
     z2 = Formula2D("x*y", "x", "y", [])
     assert z1.formula == z2.formula
+
+def test_latex():
+    pd = NFW_density_profile()
+    lr = '\\frac{r_{s} \\rho_{s}}{r \\left(\\frac{r}{r_{s}} + 1\\right)^{2}}'
+    assert pd.latex_representation() == lr
