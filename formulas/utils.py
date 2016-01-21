@@ -19,11 +19,19 @@ def check_type(x):
     else:
         return np.ndarray
 
-def convert_to_units(x, units):
+def in_cgs(x):
     if isinstance(x, YTArray):
-        x.convert_to_units(units)
+        return x.in_cgs()
     elif isinstance(x, Quantity):
-        x = x.to(units)
+        return x.cgs
+    else:
+        return x
+
+def in_units(x, units):
+    if isinstance(x, YTArray):
+        return x.in_units(units)
+    elif isinstance(x, Quantity):
+        return x.to(units)
 
 def get_units(x):
     if isinstance(x, YTArray):

@@ -18,7 +18,7 @@ from io import BytesIO
 from collections import OrderedDict
 
 from formulas.utils import \
-    convert_to_units, \
+    in_units, \
     latexify_units, \
     get_units, \
     check_type
@@ -105,6 +105,11 @@ class Formula(object):
         args = list(self.var_symbols.values())+list(self.params.values())
         if None not in self.param_values.values() or self.num_params == 0:
             self.function = lambdify(args, self.formula, modules="numpy")
+
+    def copy(self):
+        f = Formula(self.formula, self.var_symbols, self.params.values())
+        f.set_param_values(**self.param_values)
+        return f
 
     def __call__(self, **kwargs):
         if None in self.param_values.values():
@@ -263,7 +268,7 @@ class Formula1D(Formula):
         x = arr(np.linspace(x_min.value, x_max.value, num=res), get_units(x_min))
         y = arr(self(x))
         if units is not None:
-            convert_to_units(y, units)
+            y = in_units(y, units)
         x_units = latexify_units(x)
         y_units = latexify_units(y)
         ax.plot(np.array(x), np.array(y))
@@ -354,7 +359,7 @@ class Formula2D(Formula):
         vars = {str(self.x):xx,str(self.y):yy}
         z = arr(self(**vars))
         if units is not None:
-            convert_to_units(z, units)
+            z = in_units(z, units)
         x_units = latexify_units(xx)
         y_units = latexify_units(yy)
         z_units = latexify_units(z)
