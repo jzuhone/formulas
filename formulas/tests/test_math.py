@@ -6,18 +6,23 @@ import yt.units as u
 f_x = Formula1D("a*x**2+b","x",["a","b"])
 g_x = Formula1D("p*cos(c*x)","x",["c","p"])
 h_y = Formula1D("k*exp(d*y)","y",["k","d"])
+j_o = Formula1D("2*v*o+z", "o", ["v","z"])
 a = 50.*u.km/u.s**2
 b = 30.*u.km
 c = 10.*u.s**-1
 d = 5.*u.s**-1
 k = 10.*u.km
 p = 20.*u.km
+v = 3.0
+z = 1.5
 f_x.set_param_values(a=a, b=b)
 g_x.set_param_values(p=p, c=c)
 h_y.set_param_values(k=k, d=d)
+j_o.set_param_values(v=v, z=z)
 x = 60.*u.s
 y = 15.*u.s
 w = FormulaConstant("w", 2*u.km)
+o = 3.4
 
 def test_add():
     n_x = f_x+g_x
@@ -31,6 +36,8 @@ def test_add():
     assert_allclose(m_xy(x=x,y=y).v, (n_x(x)+h_y(y)).v)
     assert str(m_xy(x=x,y=y).units) == "km"
     assert (f_x + w)(x) == (w + f_x)(x)
+    assert (j_o + 4)(o) == (4 + j_o)(o)
+    assert (+f_x)(x) == +(f_x(x))
 
 def test_subtract():
     n_x = f_x-g_x
@@ -47,6 +54,7 @@ def test_subtract():
     assert len(l_x.params.values()) == 0
     assert len(l_x.param_values.values()) == 0
     assert len(l_x.var_symbols) == 0
+    assert (-f_x)(x) == -(f_x(x))
 
 def test_multiply():
     n_x = f_x*g_x
