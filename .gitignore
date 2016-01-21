@@ -1,3 +1,4 @@
 formulas.egg-info
 *.pyc
 .cache
+.coverage

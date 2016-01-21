@@ -16,3 +16,7 @@ exclude_lines =
 
     # Don't complain about ImportError
     except ImportError
+    
+    def show()
+    
+    def quick_plot
