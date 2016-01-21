@@ -56,7 +56,7 @@ class Formula(object):
     def __repr__(self):
         return self.formula.__repr__()
 
-    def show(self):
+    def show(self): # pragma: no cover
         """
         Provide a pretty representation of the formula
         from within IPython.
