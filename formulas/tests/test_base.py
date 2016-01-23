@@ -3,6 +3,7 @@ from formulas.radial_profiles import NFW_density_profile
 from formulas.general import gaussian
 import yt.units as u
 from numpy.testing import assert_allclose
+import pytest
 
 f_x = Formula1D("a*x**2+b","x",["a","b"])
 a = 50.*u.km/u.s**2
@@ -36,6 +37,17 @@ def test_clear():
     for pv in f_x.param_values.values():
         assert pv is None
     f_x.set_param_values(a=a, b=b)
+
+def test_set_bad_param():
+    with pytest.raises(KeyError):
+        g_x.set_param_values(mu_y=mu_y)
+
+def test_bad_calls():
+    f_x.clear_param_values()
+    with pytest.raises(ValueError):
+        f_x(x)
+    with pytest.raises(RuntimeError):
+        g_xyz(x=x, y=y)
 
 def test_variable():
     x = variable("x")
