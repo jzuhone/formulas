@@ -9,7 +9,6 @@ from formulas.radial_profiles import \
     NFW_mass_profile, \
     hernquist_density_profile, \
     hernquist_mass_profile, \
-    exponential_taper_profile, \
     rescale_profile_by_mass
 from yt.units.yt_array import YTArray
 from astropy.units import Quantity
@@ -73,6 +72,19 @@ def test_AM06_temperature():
     p.set_param_values(T_0=T_0, a_c=a_c, c=c, a=a)
     assert_allclose(p(r_yt).value, (T_0/(1.+r_yt/a)*(c+r_yt/a_c)/(1.+r_yt/a_c)).value)
     assert str(p(r_yt).units) == str(T_0.units)
+
+def test_AM06_density():
+    p = AM06_density_profile()
+    rho_0 = 1.0e-26*ytu.g/ytu.cm**3
+    a_c = 60*ytu.kpc
+    c = 0.17
+    a = 600.*ytu.kpc
+    alpha = -2.3
+    beta = -2.5
+    p.set_param_values(rho_0=rho_0, a_c=a_c, c=c, a=a, alpha=alpha, beta=beta)
+    assert_allclose(p(r_yt).v, 
+                    (rho_0*(1+r_yt/a_c)*(1+r_yt/a_c/c)**alpha*(1+r_yt/a)**beta).v)
+    assert str(p(r_yt).units) == str(rho_0.units)
 
 def test_mass_rescaling_yt():
     M = 6.0e14*ytu.Msun

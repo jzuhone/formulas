@@ -125,11 +125,6 @@ def NFW_mass_profile(r="r", rho_s="rho_s", r_s="r_s"):
     profile = 4*pi*rho_s*r_s**3*(log(1+x)-x/(1+x))
     return Formula1D(profile, r, [rho_s, r_s])
 
-def exponential_taper_profile(r="r", K="K", r_begin="r_begin", r_decay="r_decay", kappa="kappa"):
-    r, r_begin, kappa, r_decay = symbols((r, K, r_begin, kappa, r_decay))
-    profile = K*(r/r_begin)**kappa*exp(-(r-r_begin)/r_decay)
-    return Formula1D(profile, r, [K, r_begin, kappa, r_decay])
-
 def AM06_density_profile(r="r", rho_0="rho_0", a="a", a_c="a_c", c="c",
                          alpha="alpha", beta="beta"):
     """
