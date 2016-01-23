@@ -27,7 +27,7 @@ def power_law(x="x", K="K", x_scale="x_scale", alpha="alpha"):
 
 def exponential(x="x", A="A", x_0="x_0", x_s="x_s"):
     x, A, x_0, x_s = symbols((x, A, x_0, x_s))
-    formula = A*exp(-(x-x_0)/x_s)
+    formula = A*exp((x-x_0)/x_s)
     return Formula1D(formula, x, [A, x_0, x_s])
 
 def gaussian(x="x", A="A", mu="mu", sigma="sigma"):
