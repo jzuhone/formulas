@@ -2,6 +2,18 @@ from sympy import symbols, exp, sqrt, Rational, pi
 from formulas.base import Formula1D
 
 def linear(x="x", a="a", b="b"):
+    """
+    A linear formula.
+
+    Parameters
+    ----------
+    x : string
+        The symbol for the independent variable.
+    a : string
+        The symbol for the slope of the line.
+    b : string
+        The symbol for the intercept.
+    """
     x, a, b = symbols((x, a, b))
     formula = a*x+b
     return Formula1D(formula, x, [a, b])

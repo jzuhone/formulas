@@ -13,6 +13,9 @@ from formulas.radial_profiles import \
     hernquist_mass_profile, \
     exponential_taper_profile, \
     rescale_profile_by_mass
+from formulas.physics import \
+    maxwellian_velocity, \
+    maxwellian_speed
 from formulas.constants import \
     yt_constants, \
     astropy_constants, \
