@@ -107,7 +107,14 @@ class Formula(object):
             self.function = lambdify(args, self.formula, modules="numpy")
 
     def copy(self):
-        f = Formula(self.formula, self.var_symbols, self.params.values())
+        vars = list(self.var_symbols.values())
+        params = list(self.params.values())
+        if self.ndim == 1:
+            f = Formula1D(self.formula, vars[0], params)
+        elif self.ndim == 2:
+            f = Formula2D(self.formula, vars[0], vars[1], params)
+        else:
+            f = Formula(self.formula, vars, params)
         f.set_param_values(**self.param_values)
         return f
 
