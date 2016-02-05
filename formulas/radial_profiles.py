@@ -1,7 +1,7 @@
 from formulas.base import Formula1D
-from sympy import symbols, exp, pi, log
+from sympy import symbols, pi, log
 from sympy.mpmath import quad
-from formulas.utils import in_cgs, get_units, in_units
+from formulas.utils import in_cgs, get_units, in_units, check_type
 import numpy as np
 
 def beta_model_profile(r="r", rho_c="rho_c", r_c="r_c", beta="beta"):
@@ -228,18 +228,17 @@ def baseline_entropy_profile(r="r", K_0="K_0", K_200="K_200", r_200="r_200", alp
     profile = K_0 + K_200*(r/r_200)**alpha
     return Formula1D(profile, r, [K_0, K_200, r_200, alpha])
 
-def rescale_profile_by_mass(profile, params, mass, radius):
+def rescale_profile_by_mass(profile, param, mass, radius):
     """
     Rescale a density profile by a total mass
-    within some radius. All parameters with units of density
-    will be rescaled.
+    within some radius.
 
     Parameters
     ----------
     profile : Formula1D
         Formula that is a radial density profile.
-    params : list of strings
-        List of parameters that need to be rescaled.
+    param : list of strings
+        The density-valued parameter that needs to be rescaled.
     mass : YTQuantity
         The mass of the object.
     radius : YTQuantity
@@ -250,25 +249,32 @@ def rescale_profile_by_mass(profile, params, mass, radius):
     >>> import yt.units as u
     >>> import numpy as np
     >>> gas_density = AM06_density_profile()
-    >>> rho_0 = 1.0*u.Msun/u.kpc**3
     >>> a = 600.0*u.kpc
     >>> a_c = 60.0*u.kpc
     >>> c = 0.17
     >>> alpha = -2.0
     >>> beta = -3.0
     >>> M0 = 1.0e14*u.Msun
-    >>> gas_density.set_param_values(rho_0=rho_0, a=a, a_c=a_c,
-    ...                              c=c, alpha=alpha, beta=beta)
-    >>> rescale_profile_by_mass(gas_density, ["rho_0"], M0, np.inf*u.kpc)
+    >>> # Don't set the density parameter rho_0!
+    >>> gas_density.set_param_values(a=a, a_c=a_c, c=c, 
+    ...                              alpha=alpha, beta=beta)
+    >>> rescale_profile_by_mass(gas_density, "rho_0", M0, np.inf*u.kpc)
     """
     R = float(in_cgs(radius).value)
     M = float(in_cgs(mass).value)
-    pc = profile.copy()
-    for n, p in pc.param_values.items():
-        pc.param_values[n] = in_cgs(p)
-    rho = pc.unitless()
+    rho = profile.copy()
+    values = {}
+    for n, p in profile.param_values.items():
+        if n == param:
+            # Set the density parameter to change to unity
+            values[n] = 1.0
+        elif isinstance(p, float):
+            values[n] = p
+        else:
+            values[n] = float(in_cgs(p).value)
+    rho.set_param_values(**values)
     mass_int = lambda r: rho(r)*r*r
     scale = float(M/(4.*np.pi*quad(mass_int, [0, R])))
-    for p in params:
-        u = get_units(profile.param_values[p])
-        profile.param_values[p] = in_units(pc.param_values[p]*scale, str(u))
+    u = get_units(mass/radius**3)
+    quan = check_type(mass)(scale, "g/cm**3")
+    profile.param_values[param] = in_units(quan, u)

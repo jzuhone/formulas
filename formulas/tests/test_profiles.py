@@ -92,7 +92,7 @@ def test_mass_rescaling_yt():
     pm = NFW_mass_profile()
     pd = NFW_density_profile()
     pd.set_param_values(r_s=350*ytu.kpc, rho_s=1.0*ytu.Msun/ytu.kpc**3)
-    rescale_profile_by_mass(pd, ["rho_s"], M, R)
+    rescale_profile_by_mass(pd, "rho_s", M, R)
     pm.set_param_values(**pd.param_values)
     assert_allclose(pm(R).in_units("Msun").v, M.v)
 
@@ -102,6 +102,6 @@ def test_mass_rescaling_astropy():
     pm = NFW_mass_profile()
     pd = NFW_density_profile()
     pd.set_param_values(r_s=350*apu.kpc, rho_s=1.0*apu.Msun/apu.kpc**3)
-    rescale_profile_by_mass(pd, ["rho_s"], M, R)
+    rescale_profile_by_mass(pd, "rho_s", M, R)
     pm.set_param_values(**pd.param_values)
     assert_allclose(pm(R).to("Msun").value, M.value)
