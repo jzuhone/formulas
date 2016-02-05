@@ -102,9 +102,6 @@ class Formula(object):
                 self.param_values[k] = v
             else:
                 raise KeyError("Parameter %s is not in this formula!" % k)
-        args = list(self.var_symbols.values())+list(self.params.values())
-        if None not in self.param_values.values() or self.num_params == 0:
-            self.function = lambdify(args, self.formula, modules="numpy")
 
     def copy(self):
         vars = list(self.var_symbols.values())
@@ -125,6 +122,9 @@ class Formula(object):
             raise RuntimeError("Incorrect number of arguments provided! Must be %d!" % self.ndim)
         vars = [kwargs[var] for var in self.var_symbols]
         args = vars+list(self.param_values.values())
+        if self.function is None:
+            fargs = list(self.var_symbols.values())+list(self.params.values())
+            self.function = lambdify(fargs, self.formula, modules="numpy")
         return self.function(*args)
 
     def _formula_op(self, op, other):
