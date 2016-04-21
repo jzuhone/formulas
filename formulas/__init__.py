@@ -18,4 +18,5 @@ from formulas.physics import \
 from formulas.constants import \
     yt_constants, \
     astropy_constants, \
-    pi
+    pi, \
+    FormulaConstant
