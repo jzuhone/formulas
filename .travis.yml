@@ -39,7 +39,7 @@ install:
     - source activate test
 
     # CORE DEPENDENCIES
-    - conda install --yes numpy=$NUMPY_VERSION pytest pip yt astropy
+    - conda install --yes numpy=$NUMPY_VERSION pytest pip yt astropy mpmath
 
     # COVERAGE DEPENDENCIES
     - pip install coverage coveralls
