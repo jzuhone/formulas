@@ -237,7 +237,7 @@ def rescale_profile_by_mass(profile, param, mass, radius):
     ----------
     profile : Formula1D
         Formula that is a radial density profile.
-    param : list of strings
+    param : string
         The density-valued parameter that needs to be rescaled.
     mass : YTQuantity
         The mass of the object.
