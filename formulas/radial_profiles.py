@@ -1,6 +1,6 @@
 from formulas.base import Formula1D
 from sympy import symbols, pi, log
-from sympy.mpmath import quad
+from mpmath import quad
 from formulas.utils import in_cgs, get_units, in_units, check_type
 import numpy as np
 
@@ -227,6 +227,17 @@ def baseline_entropy_profile(r="r", K_0="K_0", K_200="K_200", r_200="r_200", alp
     r, K_0, K_200, r_200, alpha = symbols((r, K_0, K_200, r_200, alpha))
     profile = K_0 + K_200*(r/r_200)**alpha
     return Formula1D(profile, r, [K_0, K_200, r_200, alpha])
+
+def LF14_density_profile(r="r", rho_0="rho_0", r_c1="r_c1", r_c2="r_c2",
+                         r_c3="r_c3", beta1="beta1", beta2="beta2",
+                         beta3="beta3"):
+    r, rho_0, r_c1, r_c2, r_c3, beta1, beta2, beta3 = \
+        symbols((r, rho_0, r_c1, r_c2, r_c3, beta1, beta2, beta3))
+    p1 = (1+(r/r_c1)**2)**beta1
+    p2 = (1+(r/r_c2)**2)**(beta2-beta1)
+    p3 = (1+(r/r_c3)**2)**(beta3-beta2)
+    profile = rho_0/(p1*p2*p3)
+    return Formula1D(profile, r, [rho_0, r_c1, r_c2, r_c3, beta1, beta2, beta3])
 
 def rescale_profile_by_mass(profile, param, mass, radius):
     """
