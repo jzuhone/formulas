@@ -45,10 +45,12 @@ def in_units(x, units):
         return x.to(units)
 
 def get_units(x):
-    if isinstance(x, (YTArray, PintQuantity)):
+    if hasattr(x, "units"):
         return x.units
-    elif isinstance(x, Quantity):
+    elif hasattr(x, "unit"):
         return x.unit
+    else:
+        raise RuntimeError("No units are attached to this object!!")
 
 def latexify_units(x):
     if isinstance(x, YTArray):
