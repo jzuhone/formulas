@@ -11,7 +11,6 @@ from formulas.radial_profiles import \
     NFW_mass_profile, \
     hernquist_density_profile, \
     hernquist_mass_profile, \
-    LF14_density_profile, \
     rescale_profile_by_mass, \
     sNFW_density_profile, \
     sNFW_mass_profile
