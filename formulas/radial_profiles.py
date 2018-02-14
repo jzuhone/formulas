@@ -11,6 +11,8 @@ def beta_model_profile(r="r", rho_c="rho_c", r_c="r_c", beta="beta"):
 
     Parameters
     ----------
+    r : string
+        The symbol for the radius variable.
     rho_c : string
         The symbol for the scale density.
     r_c : string
@@ -31,6 +33,8 @@ def vikhlinin_density_profile(r="r", rho_0="rho_0", r_c="r_c", r_s="r_s", alpha=
 
     Parameters
     ----------
+    r : string
+        The symbol for the radius variable.
     rho_0 : string
         The symbol for the scale density of the profile.
     r_c : string
@@ -67,6 +71,8 @@ def hernquist_density_profile(r="r", M_0="M_0", a="a"):
 
     Parameters
     ----------
+    r : string
+        The symbol for the radius variable.
     M_0 : string
         The symbol for the total mass of the profile.
     a : string
@@ -83,6 +89,8 @@ def hernquist_mass_profile(r="r", M_0="M_0", a="a"):
 
     Parameters
     ----------
+    r : string
+        The symbol for the radius variable.
     M_0 : string
         The symbol for the total mass of the profile.
     a : string
@@ -99,6 +107,8 @@ def NFW_density_profile(r="r", rho_s="rho_s", r_s="r_s"):
 
     Parameters
     ----------
+    r : string
+        The symbol for the radius variable.
     rho_s : string
         The symbol for the scale density of the profile.
     r_s : string
@@ -115,6 +125,8 @@ def NFW_mass_profile(r="r", rho_s="rho_s", r_s="r_s"):
 
     Parameters
     ----------
+    r : string
+        The symbol for the radius variable.
     rho_s : string
         The symbol for the scale density of the profile.
     r_s : string
@@ -132,6 +144,8 @@ def sNFW_density_profile(r="r", M="M", a="a"):
 
     Parameters
     ----------
+    r : string
+        The symbol for the radius variable.
     M : string
         The symbol for the total mass of the profile.
     a : string
@@ -149,6 +163,8 @@ def sNFW_mass_profile(r="r", M="M", a="a"):
 
     Parameters
     ----------
+    r : string
+        The symbol for the radius variable.
     M : string
         The symbol for the total mass of the profile.
     a : string
@@ -168,6 +184,8 @@ def AM06_density_profile(r="r", rho_0="rho_0", a="a", a_c="a_c", c="c",
 
     Parameters
     ----------
+    r : string
+        The symbol for the radius variable.
     rho_0 : string
         The symbol for the scale density of the profile.
     a : string
@@ -196,6 +214,8 @@ def vikhlinin_temperature_profile(r="r", T_0="T_0", a="a", b="b", c="c",
 
     Parameters
     ----------
+    r : string
+        The symbol for the radius variable.
     T_0 : string
         The symbol for the scale temperature of the profile.
     a : string
@@ -228,6 +248,8 @@ def AM06_temperature_profile(r="r", T_0="T_0", a="a", a_c="a_c", c="c"):
 
     Parameters
     ----------
+    r : string
+        The symbol for the radius variable.
     T_0 : string
         The symbol for the scale temperature of the profile.
     a : string
@@ -249,6 +271,8 @@ def baseline_entropy_profile(r="r", K_0="K_0", K_200="K_200", r_200="r_200", alp
 
     Parameters
     ----------
+    r : string
+        The symbol for the radius variable.
     K_0 : string
         The symbol for the central entropy floor.
     K_200 : string
