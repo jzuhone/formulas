@@ -38,15 +38,40 @@ def power_law(x="x", K="K", x_scale="x_scale", alpha="alpha"):
     return Formula1D(formula, x, [x_scale, K, alpha])
 
 def exponential(x="x", A="A", x_0="x_0", x_s="x_s"):
+    """
+    An exponential formula.
+
+    Parameters
+    ----------
+    x : string
+        The symbol for the independent variable.
+    A : string
+        The symbol for the normalization.
+    x_0 : string
+        The symbol for the y-intercept.
+    x_s : string
+        The symbol for the scale parameter.
+    """
     x, A, x_0, x_s = symbols((x, A, x_0, x_s))
     formula = A*exp((x-x_0)/x_s)
     return Formula1D(formula, x, [A, x_0, x_s])
 
 def gaussian(x="x", A="A", mu="mu", sigma="sigma"):
-    x, A, sigma = symbols((x, A, sigma))
-    params = [A, sigma]
-    if mu != 0:
-        mu = symbols(mu)
-        params.append(mu)
+    """
+    A Gaussian formula.
+
+    Parameters
+    ----------
+    x : string
+        The symbol for the independent variable.
+    A : string
+        The symbol for the normalization.
+    mu : string
+        The symbol for the mean.
+    sigma : string
+        The symbol for the standard deviation.
+    """
+    x, A, mu, sigma = symbols((x, A, mu, sigma))
+    params = [A, mu, sigma]
     formula = A*exp(-Rational(1,2)*((x-mu)/sigma)**2)/(sigma*sqrt(2*pi))
     return Formula1D(formula, x, params)
