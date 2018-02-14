@@ -12,7 +12,9 @@ from formulas.radial_profiles import \
     hernquist_density_profile, \
     hernquist_mass_profile, \
     LF14_density_profile, \
-    rescale_profile_by_mass
+    rescale_profile_by_mass, \
+    sNFW_density_profile, \
+    sNFW_mass_profile
 from formulas.physics import \
     maxwellian_velocity, \
     maxwellian_speed

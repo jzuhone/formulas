@@ -125,6 +125,40 @@ def NFW_mass_profile(r="r", rho_s="rho_s", r_s="r_s"):
     profile = 4*pi*rho_s*r_s**3*(log(1+x)-x/(1+x))
     return Formula1D(profile, r, [rho_s, r_s])
 
+def sNFW_density_profile(r="r", M="M", a="a"):
+    """
+    A "super-NFW" density profile (Lilley, E. J.,
+    Wyn Evans, N., & Sanders, J.L. 2018, MNRAS).
+
+    Parameters
+    ----------
+    M : string
+        The symbol for the total mass of the profile.
+    a : string
+        The symbol for the scale radius.
+    """
+    r, M, a = symbols((r, M, a))
+    x = r/a
+    profile = 3*M/(16*pi*a**3)/(x*(1+x)**(5/2))
+    return Formula1D(profile, r, [M, a])
+
+def sNFW_mass_profile(r="r", M="M", a="a"):
+    """
+    A "super-NFW" mass profile (Lilley, E. J.,
+    Wyn Evans, N., & Sanders, J.L. 2018, MNRAS).
+
+    Parameters
+    ----------
+    M : string
+        The symbol for the total mass of the profile.
+    a : string
+        The symbol for the scale radius.
+    """
+    r, M, a = symbols((r, M, a))
+    x = r/a
+    profile = M*(1-(2+3*x)/(2*(1+x)**(3/2)))
+    return Formula1D(profile, r, [M, a])
+
 def AM06_density_profile(r="r", rho_0="rho_0", a="a", a_c="a_c", c="c",
                          alpha="alpha", beta="beta"):
     """
