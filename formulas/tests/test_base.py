@@ -28,9 +28,9 @@ y = 25.*u.s
 z = -10.*u.s
 
 def test_unitless():
-    assert_allclose(f_x(x).v, f_x.unitless()(x.v))
-    assert_allclose(g_xy(x=x,y=y).v, g_xy.unitless()(x=x.v,y=y.v))
-    assert_allclose(g_xyz(x=x,y=y,z=z).v, g_xyz.unitless()(x=x.v,y=y.v,z=z.v))
+    assert_allclose(f_x(x).v, f_x.unitless(x.v))
+    assert_allclose(g_xy(x=x,y=y).v, g_xy.unitless(x=x.v,y=y.v))
+    assert_allclose(g_xyz(x=x,y=y,z=z).v, g_xyz.unitless(x=x.v,y=y.v,z=z.v))
 
 def test_clear():
     f_x.clear_param_values()
