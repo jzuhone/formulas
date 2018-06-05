@@ -217,23 +217,28 @@ class Formula(object):
         formula = diff(self.formula, self.var_symbols[var])
         return self._formula_op(None, formula)
 
+    _unitless = None
+
+    @property
     def unitless(self):
-        vars = list(self.var_symbols.values())
-        params = list(self.params.values())
-        if self.ndim == 1:
-            uf = Formula1D(self.formula, vars[0], params)
-        elif self.ndim == 2:
-            uf = Formula2D(self.formula, vars[0], vars[1], params)
-        else:
-            uf = Formula(self.formula, vars, params)
-        pvalues = {}
-        for k,v in self.param_values.items():
-            if hasattr(v,"units") or hasattr(v,"unit"):
-                pvalues[k] = float(v.value)
+        if self._unitless is None:
+            vars = list(self.var_symbols.values())
+            params = list(self.params.values())
+            if self.ndim == 1:
+                uf = Formula1D(self.formula, vars[0], params)
+            elif self.ndim == 2:
+                uf = Formula2D(self.formula, vars[0], vars[1], params)
             else:
-                pvalues[k] = v
-        uf.set_param_values(**pvalues)
-        return uf
+                uf = Formula(self.formula, vars, params)
+            pvalues = {}
+            for k,v in self.param_values.items():
+                if hasattr(v,"units") or hasattr(v,"unit"):
+                    pvalues[k] = float(v.value)
+                else:
+                    pvalues[k] = v
+            uf.set_param_values(**pvalues)
+            self._unitless = uf
+        return self._unitless
 
 class Formula1D(Formula):
     def __init__(self, formula, x, params):
