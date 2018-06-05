@@ -1,26 +1,39 @@
 import numpy as np
 
+class NotAvailable(object):
+    pass
+
+
 try:
     from yt.units.yt_array import YTArray, YTQuantity
 except ImportError:
-    YTArray = object
-    YTQuantity = object
+    YTArray = NotAvailable
+    YTQuantity = NotAvailable
 
 try:
     from astropy.units import Quantity
 except ImportError:
-    Quantity = object
+    Quantity = NotAvailable
 
 try:
     from pint import UnitRegistry
     ureg = UnitRegistry(system='cgs')
     PintQuantity = ureg.Quantity
 except ImportError:
-    PintQuantity = object
+    PintQuantity = NotAvailable
+
+try:
+    from unyt import unyt_array, unyt_quantity
+except ImportError:
+    unyt_quantity = NotAvailable
+    unyt_array = NotAvailable
+
 
 def check_type(x):
     if isinstance(x, (YTArray, YTQuantity)):
         return YTArray
+    elif isinstance(x, (unyt_array, unyt_quantity)):
+        return unyt_array
     elif isinstance(x, Quantity):
         return Quantity
     elif isinstance(x, PintQuantity):
@@ -28,8 +41,9 @@ def check_type(x):
     else:
         return np.ndarray
 
+
 def in_cgs(x):
-    if isinstance(x, YTArray):
+    if isinstance(x, (YTArray, unyt_array)):
         return x.in_cgs()
     elif isinstance(x, Quantity):
         return x.cgs
@@ -38,11 +52,10 @@ def in_cgs(x):
     else:
         return x
 
+
 def in_units(x, units):
-    if isinstance(x, YTArray):
-        return x.in_units(units)
-    elif isinstance(x, (Quantity, PintQuantity)):
-        return x.to(units)
+    return x.to(units)
+
 
 def get_units(x):
     if hasattr(x, "units"):
@@ -52,8 +65,9 @@ def get_units(x):
     else:
         raise RuntimeError("No units are attached to this object!!")
 
+
 def latexify_units(x):
-    if isinstance(x, YTArray):
+    if isinstance(x, (YTArray, unyt_array)):
         return "$"+x.units.latex_representation()+"$"
     elif isinstance(x, Quantity):
         return x.unit.to_string("latex")
