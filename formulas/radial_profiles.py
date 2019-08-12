@@ -336,3 +336,41 @@ def rescale_profile_by_mass(profile, param, mass, radius):
     u = get_units(mass/radius**3)
     quan = check_type(mass)(scale, "g/cm**3")
     profile.param_values[param] = in_units(quan, u)
+
+
+def _nfw_factor(conc):
+    return 1.0/(np.log(conc+1.0)-conc/(1.0+conc))
+
+
+def compute_NFW_scale_density(conc, z=0.0, delta_v=200.0, cosmo=None):
+    try:
+        from yt.utilities.cosmology import Cosmology
+        _cosmo = Cosmology()
+    except ImportError:
+        from astropy.cosmology import Planck15 as _cosmo
+    if cosmo is None:
+        cosmo = _cosmo
+    rho_crit = cosmo.critical_density(z)
+    rho_s = delta_v*rho_crit*conc**3*_nfw_factor(conc)
+    return rho_s
+
+
+def convert_NFW_to_hernquist(M200, r200, conc):
+    """
+    Given M200, r200, and a concentration parameter for an
+    NFW profile, return the Hernquist mass and scale radius
+    parameters.
+
+    Parameters
+    ----------
+    M200 : YTQuantity
+        The mass of the halo at r200.
+    r200 : YTQuantity
+        The radius corresponding to the overdensity of 200 times the
+        critical density of the universe.
+    conc : float
+        The concentration parameter r200/r_s for the NFW profile.
+    """
+    a = r200/(np.sqrt(0.5*conc*conc*_nfw_factor(conc))-1.0)
+    M0 = M200*(r200+a)**2/r200**2
+    return M0, a
