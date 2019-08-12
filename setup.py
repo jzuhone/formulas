@@ -33,5 +33,4 @@ setup(name='formulas',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5',
           'Topic :: Scientific/Engineering :: Visualization',
-      ],
-      )
+      ])

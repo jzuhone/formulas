@@ -1,6 +1,7 @@
 from sympy import symbols
 from sympy import pi as sym_pi
 from formulas.base import Formula
+
 try:
     import yt.utilities.physical_constants as yt_pc
 except ImportError:
@@ -9,19 +10,13 @@ try:
     import astropy.constants as astropy_pc
 except ImportError:
     astropy_pc = None
-try:
-    from pint import UnitRegistry
-    pint_pc = UnitRegistry(system='cgs')
-except ImportError:
-    pint_pc = None
 
 yt_map = {"m_e": "me",
           "m_p": "mp",
           "m_h": "mh",
           "k_B": "kboltz"}
 astropy_map = {}
-pint_map = {"G": "newtonian_constant_of_gravitation",
-            "k_B": "k"}
+
 
 class FormulaConstant(Formula):
     def __init__(self, name, value):
@@ -71,5 +66,3 @@ if yt_pc is not None:
     yt_constants = PhysicalConstants(yt_pc, yt_map)
 if astropy_pc is not None:
     astropy_constants = PhysicalConstants(astropy_pc, astropy_map)
-if pint_pc is not None:
-    pint_constants = PhysicalConstants(pint_pc, pint_map)

@@ -1,7 +1,5 @@
 from formulas.radial_profiles import \
     beta_model_profile, \
-    vikhlinin_density_profile, \
-    vikhlinin_temperature_profile, \
     baseline_entropy_profile, \
     AM06_density_profile, \
     AM06_temperature_profile, \

@@ -16,13 +16,6 @@ except ImportError:
     Quantity = NotAvailable
 
 try:
-    from pint import UnitRegistry
-    ureg = UnitRegistry(system='cgs')
-    PintQuantity = ureg.Quantity
-except ImportError:
-    PintQuantity = NotAvailable
-
-try:
     from unyt import unyt_array, unyt_quantity
 except ImportError:
     unyt_quantity = NotAvailable
@@ -36,8 +29,6 @@ def check_type(x):
         return unyt_array
     elif isinstance(x, Quantity):
         return Quantity
-    elif isinstance(x, PintQuantity):
-        return PintQuantity
     else:
         return np.ndarray
 
@@ -47,8 +38,6 @@ def in_cgs(x):
         return x.in_cgs()
     elif isinstance(x, Quantity):
         return x.cgs
-    elif isinstance(x, PintQuantity):
-        return x.to_base_units()
     else:
         return x
 
@@ -71,5 +60,3 @@ def latexify_units(x):
         return "$"+x.units.latex_representation()+"$"
     elif isinstance(x, Quantity):
         return x.unit.to_string("latex")
-    elif isinstance(x, PintQuantity):
-        return '{:L}'.format(x.units)
