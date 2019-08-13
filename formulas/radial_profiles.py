@@ -4,6 +4,7 @@ from mpmath import quad
 from formulas.utils import in_cgs, get_units, in_units, check_type
 import numpy as np
 
+
 def beta_model_profile(r="r", rho_c="rho_c", r_c="r_c", beta="beta"):
     """
     A beta-model density profile (like for galaxy clusters,
@@ -24,8 +25,10 @@ def beta_model_profile(r="r", rho_c="rho_c", r_c="r_c", beta="beta"):
     profile = rho_c*((1+(r/r_c)**2)**(-3*beta/2))
     return Formula1D(profile, r, [r_c, rho_c, beta])
 
-def vikhlinin_density_profile(r="r", rho_0="rho_0", r_c="r_c", r_s="r_s", alpha="alpha",
-                              beta="beta", epsilon="epsilon", gamma=None):
+
+def vikhlinin_density_profile(r="r", rho_0="rho_0", r_c="r_c",
+                              r_s="r_s", alpha="alpha", beta="beta",
+                              epsilon="epsilon", gamma=None):
     """
     A modified beta-model density profile for galaxy
     clusters from Vikhlinin, A., Kravtsov, A., Forman, W.,
@@ -64,6 +67,7 @@ def vikhlinin_density_profile(r="r", rho_0="rho_0", r_c="r_c", r_s="r_s", alpha=
         (1+(r/r_s)**gamma)**(-epsilon/gamma/2)
     return Formula1D(profile, r, params)
 
+
 def hernquist_density_profile(r="r", M_0="M_0", a="a"):
     """
     A Hernquist density profile (Hernquist, L. 1990,
@@ -82,6 +86,7 @@ def hernquist_density_profile(r="r", M_0="M_0", a="a"):
     profile = M_0/(2*pi*a**3)/((r/a)*(1+r/a)**3)
     return Formula1D(profile, r, [M_0, a])
 
+
 def hernquist_mass_profile(r="r", M_0="M_0", a="a"):
     """
     A Hernquist mass profile (Hernquist, L. 1990,
@@ -99,7 +104,8 @@ def hernquist_mass_profile(r="r", M_0="M_0", a="a"):
     r, M_0, a = symbols((r, M_0, a))
     profile = M_0*r**2/(r+a)**2
     return Formula1D(profile, r, [M_0, a])
-    
+
+
 def NFW_density_profile(r="r", rho_s="rho_s", r_s="r_s"):
     """
     An NFW density profile (Navarro, J.F., Frenk, C.S.,
@@ -117,6 +123,7 @@ def NFW_density_profile(r="r", rho_s="rho_s", r_s="r_s"):
     r, rho_s, r_s = symbols((r, rho_s, r_s))
     profile = rho_s/((r/r_s)*(1+r/r_s)**2)
     return Formula1D(profile, r, [rho_s, r_s])
+
 
 def NFW_mass_profile(r="r", rho_s="rho_s", r_s="r_s"):
     """
@@ -137,6 +144,7 @@ def NFW_mass_profile(r="r", rho_s="rho_s", r_s="r_s"):
     profile = 4*pi*rho_s*r_s**3*(log(1+x)-x/(1+x))
     return Formula1D(profile, r, [rho_s, r_s])
 
+
 def sNFW_density_profile(r="r", M="M", a="a"):
     """
     A "super-NFW" density profile (Lilley, E. J.,
@@ -155,6 +163,7 @@ def sNFW_density_profile(r="r", M="M", a="a"):
     x = r/a
     profile = 3*M/(16*pi*a**3)/(x*(1+x)**(5/2))
     return Formula1D(profile, r, [M, a])
+
 
 def sNFW_mass_profile(r="r", M="M", a="a"):
     """
@@ -200,9 +209,11 @@ def AM06_density_profile(r="r", rho_0="rho_0", a="a", a_c="a_c", c="c",
     beta : string
         The symbol for the second slope parameter.
     """
-    r, rho_0, a, a_c, c, alpha, beta = symbols((r, rho_0, a, a_c, c, alpha, beta))
+    r, rho_0, a, a_c, c, alpha, beta = symbols((r, rho_0, a, a_c, c, 
+                                                alpha, beta))
     profile = rho_0*(1+r/a_c)*(1+r/a_c/c)**alpha*(1+r/a)**beta
     return Formula1D(profile, r, [rho_0, a, a_c, c, alpha, beta])
+
 
 def vikhlinin_temperature_profile(r="r", T_0="T_0", a="a", b="b", c="c",
                                   r_t="r_t", T_min="T_min",
@@ -240,6 +251,7 @@ def vikhlinin_temperature_profile(r="r", T_0="T_0", a="a", b="b", c="c",
     profile = T_0*t*(x+T_min/T_0)/(x+1)
     return Formula1D(profile, r, [T_0, a, b, c, r_t, T_min, r_cool, a_cool])
 
+
 def AM06_temperature_profile(r="r", T_0="T_0", a="a", a_c="a_c", c="c"):
     """
     The temperature profile for galaxy clusters suggested by
@@ -264,7 +276,9 @@ def AM06_temperature_profile(r="r", T_0="T_0", a="a", a_c="a_c", c="c"):
     profile = T_0/(1+r/a)*(c+r/a_c)/(1+r/a_c)
     return Formula1D(profile, r, [T_0, a, a_c, c])
 
-def baseline_entropy_profile(r="r", K_0="K_0", K_200="K_200", r_200="r_200", alpha="alpha"):
+
+def baseline_entropy_profile(r="r", K_0="K_0", K_200="K_200", r_200="r_200",
+                             alpha="alpha"):
     """
     The baseline entropy profile for galaxy clusters (Voit, G.M.,
     Kay, S.T., & Bryan, G.L. 2005, MNRAS, 364, 909).
@@ -285,6 +299,7 @@ def baseline_entropy_profile(r="r", K_0="K_0", K_200="K_200", r_200="r_200", alp
     r, K_0, K_200, r_200, alpha = symbols((r, K_0, K_200, r_200, alpha))
     profile = K_0 + K_200*(r/r_200)**alpha
     return Formula1D(profile, r, [K_0, K_200, r_200, alpha])
+
 
 def rescale_profile_by_mass(profile, param, mass, radius):
     """
