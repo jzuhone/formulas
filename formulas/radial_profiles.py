@@ -1,5 +1,5 @@
 from formulas.base import Formula1D
-from sympy import symbols, pi, log
+from sympy import symbols, pi, log, exp
 from mpmath import quad
 from formulas.utils import in_cgs, get_units, in_units, check_type
 import numpy as np
@@ -104,6 +104,7 @@ def hernquist_mass_profile(r="r", M_0="M_0", a="a"):
     r, M_0, a = symbols((r, M_0, a))
     profile = M_0*r**2/(r+a)**2
     return Formula1D(profile, r, [M_0, a])
+
 
 
 def NFW_density_profile(r="r", rho_s="rho_s", r_s="r_s"):
@@ -381,16 +382,32 @@ def _nfw_factor(conc):
     return 1.0/(np.log(conc+1.0)-conc/(1.0+conc))
 
 
-def compute_NFW_scale_density(conc, z=0.0, delta_v=200.0, cosmo=None):
-    try:
-        from yt.utilities.cosmology import Cosmology
-        _cosmo = Cosmology()
-    except ImportError:
-        from astropy.cosmology import Planck15 as _cosmo
-    if cosmo is None:
-        cosmo = _cosmo
-    rho_crit = cosmo.critical_density(z)
-    rho_s = delta_v*rho_crit*conc**3*_nfw_factor(conc)
+def compute_NFW_scale_density(conc, z=0.0, delta=200.0, hubble=0.7):
+    """
+    Compute a scale density parameter for an NFW profile
+    given a concentration parameter, and optionally
+    a redshift, overdensity, and cosmology.
+
+    Parameters
+    ----------
+    conc : float
+        The concentration parameter for the halo, which should 
+        correspond the selected overdensity (which has a default
+        of 200). 
+    z : float, optional
+        The redshift of the halo formation. Default: 0.0
+    delta : float, optional
+        The overdensity parameter for which the concentration
+        is defined. Default: 200.0
+    hubble : float, optional
+        The Hubble parameter at the current epoch, which 
+        determines the value of the critical density.
+    """
+    import unyt as u
+    H0 = hubble*100.0*u.km/u.s/u.kpc
+    rho_crit = 3.0*H0**2/(8.0*np.pi*u.G).to("Msun/kpc**3")
+    rho_crit *= (1.0+z)**3
+    rho_s = delta*rho_crit*conc**3*_nfw_factor(conc)
     return rho_s
 
 
