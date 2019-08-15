@@ -184,6 +184,30 @@ def sNFW_mass_profile(r="r", M="M", a="a"):
     profile = M*(1-(2+3*x)/(2*(1+x)**(3/2)))
     return Formula1D(profile, r, [M, a])
 
+
+def einasto_density_profile(r="r", rho_0="rho_0", h="h", alpha="alpha"):
+    """
+    A density profile where the logarithmic slope is a 
+    power-law. The form here is that given in Equation 5 of
+    Retana-Montenegro et al. 2012, A&A, 540, A70.
+
+    Parameters
+    ----------
+    r : string
+        The symbol for the radius variable.
+    rho_0 : string
+        The symbol for the core density.
+    h : string
+        The symbol for the scale radius.
+    alpha : string
+        The symbol for the power-law index.
+    """
+    r, rho_0, h, alpha = symbols((r, rho_0, h, alpha))
+    x = r/h
+    profile = rho_0*exp(-x**alpha)
+    return Formula1D(profile, r, [rho_0, h, alpha])
+
+
 def AM06_density_profile(r="r", rho_0="rho_0", a="a", a_c="a_c", c="c",
                          alpha="alpha", beta="beta"):
     """
