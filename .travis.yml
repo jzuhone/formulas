@@ -9,13 +9,11 @@ matrix:
     include:
 
         # Try all python versions with the latest numpy
-        - python: 2.7
-          env: CMD='python setup.py test'
-        - python: 3.4
-          env: CMD='python setup.py test'
         - python: 3.5
           env: CMD='python setup.py test'
-        - python: 2.7
+        - python: 3.6
+          env: CMD='python setup.py test'
+        - python: 3.7
           env: CMD='coverage run --source formulas -m py.test'
 
 before_install:
