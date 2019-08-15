@@ -11,8 +11,6 @@ import matplotlib
 from matplotlib.backends.backend_agg import \
     FigureCanvasAgg
 
-from six import PY2, string_types
-
 import base64
 from io import BytesIO
 from collections import OrderedDict
@@ -24,11 +22,10 @@ from formulas.utils import \
     check_type
 
 NumberTypes = [int, float, Float, Rational, Integer, Pi]
-if PY2:
-    NumberTypes.append(long)
 NumberTypes = tuple(NumberTypes)
 SymPyTypes = (Mul, Add)
 ExpTypes = (Rational, Float, Integer)
+
 
 class Formula(object):
     def __init__(self, formula, vars, params):
@@ -37,16 +34,16 @@ class Formula(object):
         self.param_values = OrderedDict()
         self.var_symbols = OrderedDict()
         for v in vars:
-            if isinstance(v, string_types):
+            if isinstance(v, str):
                 v = symbols(v)
             self.var_symbols[str(v)] = v
         self.ndim = len(self.var_symbols.keys())
         for p in params:
-            if isinstance(p, string_types):
+            if isinstance(p, str):
                 p = symbols(p)
             self.params[str(p)] = p
             self.param_values[str(p)] = None
-        if isinstance(formula, string_types):
+        if isinstance(formula, str):
             formula = sympify(formula)
         self.formula = formula
         self.num_params = len(self.params)
@@ -239,6 +236,7 @@ class Formula(object):
             uf.set_param_values(**pvalues)
             self._unitless = uf
         return self._unitless
+
 
 class Formula1D(Formula):
     def __init__(self, formula, x, params):
