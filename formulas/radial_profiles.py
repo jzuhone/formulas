@@ -404,8 +404,8 @@ def compute_NFW_scale_density(conc, z=0.0, delta=200.0, hubble=0.7):
         determines the value of the critical density.
     """
     import unyt as u
-    H0 = hubble*100.0*u.km/u.s/u.kpc
-    rho_crit = 3.0*H0**2/(8.0*np.pi*u.G).to("Msun/kpc**3")
+    H0 = hubble*100.0*u.km/u.s/u.Mpc
+    rho_crit = (3.0*H0**2/(8.0*np.pi*u.G)).to("Msun/kpc**3")
     rho_crit *= (1.0+z)**3
     rho_s = delta*rho_crit*conc**3*_nfw_factor(conc)
     return rho_s
