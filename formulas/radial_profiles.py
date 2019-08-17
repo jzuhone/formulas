@@ -87,6 +87,12 @@ def hernquist_density_profile(r="r", M_0="M_0", a="a"):
     return Formula1D(profile, r, [M_0, a])
 
 
+def cored_hernquist_density_profile(r="r", M_0="M_0", a="a", b="b"):
+    r, M_0, a, b = symbols((r, M_0, a, b))
+    profile = M_0*b/(2*pi*a**3)/((1+b*r/a)*(1+r/a)**3)
+    return Formula1D(profile, r, [M_0, a, b])
+
+
 def hernquist_mass_profile(r="r", M_0="M_0", a="a"):
     """
     A Hernquist mass profile (Hernquist, L. 1990,
