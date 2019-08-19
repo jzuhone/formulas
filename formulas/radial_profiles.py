@@ -390,7 +390,7 @@ def _nfw_factor(conc):
     return 1.0/(np.log(conc+1.0)-conc/(1.0+conc))
 
 
-def compute_NFW_scale_density(conc, z=0.0, delta=200.0, hubble=0.7):
+def compute_NFW_scale_density(conc, z=0.0, delta=200.0, cosmo=None):
     """
     Compute a scale density parameter for an NFW profile
     given a concentration parameter, and optionally
@@ -407,15 +407,20 @@ def compute_NFW_scale_density(conc, z=0.0, delta=200.0, hubble=0.7):
     delta : float, optional
         The overdensity parameter for which the concentration
         is defined. Default: 200.0
-    hubble : float, optional
-        The Hubble parameter at the current epoch, which 
-        determines the value of the critical density.
+    cosmo : yt Cosmology or AstroPy Cosmology object
+        The cosmology to be used when computing the critical
+        density. If not supplied, a default one from yt or
+        AstroPy will be used.
     """
-    import unyt as u
-    H0 = hubble*100.0*u.km/u.s/u.Mpc
-    rho_crit = (3.0*H0**2/(8.0*np.pi*u.G)).to("Msun/kpc**3")
-    rho_crit *= (1.0+z)**3
-    rho_s = delta*rho_crit*conc**3*_nfw_factor(conc)
+    try:
+        from yt.utilities.cosmology import Cosmology
+        _cosmo = Cosmology()
+    except ImportError:
+        from astropy.cosmology import Planck15 as _cosmo
+    if cosmo is None:
+        cosmo = _cosmo
+    rho_crit = cosmo.critical_density(z).to("Msun/kpc**3")
+    rho_s = delta*rho_crit*conc**3*_nfw_factor(conc)/3.
     return rho_s
 
 
