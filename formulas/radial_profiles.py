@@ -369,6 +369,8 @@ def rescale_profile_by_mass(profile, param, mass, radius):
     rho = profile.copy()
     values = {}
     for n, p in profile.param_values.items():
+        if p is None:
+            raise RuntimeError("The parameter %s does not have a value!" % n)
         if n == param:
             # Set the density parameter to change to unity
             values[n] = 1.0
