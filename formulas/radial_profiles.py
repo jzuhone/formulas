@@ -112,7 +112,6 @@ def hernquist_mass_profile(r="r", M_0="M_0", a="a"):
     return Formula1D(profile, r, [M_0, a])
 
 
-
 def NFW_density_profile(r="r", rho_s="rho_s", r_s="r_s"):
     """
     An NFW density profile (Navarro, J.F., Frenk, C.S.,
@@ -130,6 +129,27 @@ def NFW_density_profile(r="r", rho_s="rho_s", r_s="r_s"):
     r, rho_s, r_s = symbols((r, rho_s, r_s))
     profile = rho_s/((r/r_s)*(1+r/r_s)**2)
     return Formula1D(profile, r, [rho_s, r_s])
+
+
+def tNFW_density_profile(r="r", rho_s="rho_s", r_s="r_s", r_t="r_t"):
+    """
+    A truncated NFW density profile ().
+
+    Parameters
+    ----------
+    r : string
+        The symbol for the radius variable.
+    rho_s : string
+        The symbol for the scale density of the profile.
+    r_s : string
+        The symbol for the scale radius.
+    r_t : string
+        The symbol for the truncation radius.
+    """
+    r, rho_s, r_s, r_t = symbols((r, rho_s, r_s, r_t))
+    profile = rho_s/((r/r_s)*(1+r/r_s)**2)
+    profile /= (1+(r/r_t)**2)
+    return Formula1D(profile, r, [rho_s, r_s, r_t])
 
 
 def NFW_mass_profile(r="r", rho_s="rho_s", r_s="r_s"):
